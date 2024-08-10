@@ -18,6 +18,7 @@ AI Movie Recommender is a Python application that leverages your Plex watch hist
 2. Install the required dependencies
 pip install -r requirements.txt
 3. Set up your environment variables by creating a `.env` file in the project root:
+```
 OPENAI_API_KEY=your_openai_api_key
 GOOGLE_API_KEY=your_google_api_key
 GOOGLE_SEARCH_ENGINE_ID=your_google_search_engine_id
@@ -31,12 +32,12 @@ SMTP_SECURITY=ssl
 SMTP_AUTH_MECHANISM=Plain
 PLEX_AUTH_TOKEN=your_plex_auth_token
 PLEX_USER_ID=your_plex_user_id
-
+```
 
 ## 🖥 Usage
 
 Run the main script:
-python main.py
+`python main.py`
 
 
 The application will:
