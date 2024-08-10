@@ -73,7 +73,11 @@ def get_movie_recommendations(client, assistant, thread, watch_history, search_w
         client.beta.threads.messages.create(
             thread_id=thread.id,
             role="user",
-            content=f"Based on this watch history: {', '.join(watch_history)}, can you recommend 10 movies? For each movie, provide a short summary without any spoilers. Format your response as a numbered list."
+            content=f"""Based on this watch history: {', '.join(watch_history)}, can you recommend BOTH of the following: 
+            1. 10 new movies based on my watch history.
+            2. 10 new movies you may think I will like and most likely haven't heard of.
+
+            For each of the 20 movie recommendations, provide a short summary without any spoilers. Format your response as a numbered list."""
         )
 
         # Create a run
@@ -130,7 +134,9 @@ def get_movie_recommendations(client, assistant, thread, watch_history, search_w
         # Get the latest assistant response
         if assistant_responses:
             latest_response = assistant_responses[0]
-            return latest_response.content[0].text.value
+            return_value = latest_response.content[0].text.value
+            delete_thread(client, thread.id)
+            return return_value
         else:
             logger.warning("No assistant response found")
             return ""
@@ -149,3 +155,11 @@ def delete_ai_assistant(client, assistant_id):
         logger.info(f"AI Assistant deleted: {response}")
     except Exception as e:
         logger.error(f"Error deleting AI assistant: {str(e)}")
+
+def delete_thread(client, thread_id):
+    try:
+        response = client.beta.threads.delete(thread_id)
+        logger.info(f"Thread deleted: {response}")
+    except Exception as e:
+        logger.error(f"Error deleting thread: {str(e)}")
+
